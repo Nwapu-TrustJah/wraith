@@ -138,3 +138,8 @@ export function toDisplayAmount(
 
   return `${sign}${integer}.${String(remainder).padStart(normalizedDecimals, "0")}`;
 }
+export function nairaScale(){return 100;}
+export function isNairaAmountPlausible(value:any){if(typeof value!=='number'||!Number.isFinite(value)||!Number.isInteger(value))return false;if(value<0)return false;if(value<100*100)return false;if(value>100000000*100)return false;return true;}
+export function checkNairaAmount(value:any){if(!isNairaAmountPlausible(value))return {ok:false,reason:'naira amount is not plausible'};return {ok:true};}
+export function crossCheckWebhookAmount(webhookAmountNGN:any,orderAmountNGN:any){const w=Number(webhookAmountNGN);const o=Number(orderAmountNGN);if(!Number.isFinite(w)||!Number.isFinite(o))return {ok:false,reason:'non-finite naira amount'};if(w!==o*100){if(Math.abs(w-o)<Math.abs(w-o*100))return {ok:false,reason:'scale mismatch: webhook amount is 100x too small'};return {ok:false,reason:'scale mismatch'};}if(!isNairaAmountPlausible(w))return {ok:false,reason:'implausible naira amount'};return {ok:true};}
+

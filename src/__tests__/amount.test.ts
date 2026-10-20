@@ -1,4 +1,4 @@
-import { crossCheckWebhookAmount, isNairaAmountPlausible, nairaScale } from "../amount";
+import { crossCheckWebhookAmount, isNairaAmountPlausible, nairaScale, checkNairaAmount } from "../amount";
 import { toDisplayAmount } from "../amount";
 
 describe("toDisplayAmount", () => {
@@ -91,7 +91,7 @@ describe("naira scale", () => {
   });
 
   it("checkNairaAmount returns a flag rather than throwing for out-of-range values", () => {
-    const result = isNairaAmountPlausible(20000000000);
+    const result = checkNairaAmount(20000000000);
     expect(result.ok).toBe(false);
     expect(result.reason).toBeTruthy();
   });
